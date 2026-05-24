@@ -72,9 +72,9 @@ function App() {
 
   const socialLinks = [
     { name: "GitHub", icon: Github, url: "https://github.com/SurajNyavanandi", color: "text-gray-800" },
-    { name: "LinkedIn", icon: Linkedin, url: "www.linkedin.com/in/suraj-nyavanandi-305962286", color: "text-blue-700" },
+    { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/suraj-nyavanandi-305962286", color: "text-blue-700" },
     { name: "Twitter", icon: Twitter, url: "https://twitter.com/yourhandle", color: "text-sky-500" },
-    { name: "Instagram", icon: Instagram, url: "https://www.linkedin.com/in/suraj-nyavanandi-305962286", color: "text-pink-600" },
+    { name: "Instagram", icon: Instagram, url: "https://www.instagram.com/virat.tom/", color: "text-pink-600" },
     { name: "Email", icon: Mail, url: "mailto:kanusuraj15@gmail.com", color: "text-red-500" }
   ];
 
