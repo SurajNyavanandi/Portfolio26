@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { 
   Menu, X, Github, Linkedin, Mail, Phone, 
-  ExternalLink, Briefcase, GraduationCap, Award, Heart,
-  Twitter, Instagram, Globe, ArrowUpRight
+  ExternalLink, GraduationCap, Award, Heart,
+  Twitter, Instagram, ArrowUpRight, Maximize2
 } from 'lucide-react';
 import { 
   SiReact, SiNodedotjs, SiExpress, SiMongodb, 
@@ -10,9 +10,12 @@ import {
   SiAngular, SiNestjs, SiMysql, SiGit, 
   SiRedux, SiSocketdotio, SiPostman, SiVite
 } from 'react-icons/si';
+import profilePic from './assets/profile-pic.jpeg';
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [expandedProject, setExpandedProject] = useState(null); // null = all expanded
+  const [fullScreenProject, setFullScreenProject] = useState(null);
 
   const projects = [
     {
@@ -21,7 +24,7 @@ function App() {
       description: "Full-stack e-commerce platform with product filtering, inventory management, JWT authentication, Razorpay payment, and AWS S3 storage.",
       tech: [SiReact, SiNodedotjs, SiExpress, SiMongodb, SiTailwindcss],
       liveUrl: "https://shop.virattom.com",
-      github: "https://github.com/SurajNyavanandi/ecommerce",
+      github: "https://github.com/SurajNyavanandi/StoreAndManage.git",
       bgGradient: "from-blue-50 to-indigo-50"
     },
     {
@@ -30,25 +33,25 @@ function App() {
       description: "Enterprise system with role-based access (SUPER_ADMIN, ADMIN, UNIT_MANAGER, USER). Features invoice validation, date sequencing, and financial year filtering.",
       tech: [SiReact, SiNodedotjs, SiExpress, SiMongodb, SiTailwindcss],
       liveUrl: "https://invoice.virattom.com",
-      github: "https://github.com/SurajNyavanandi/MERN-Task",
+      github: "https://github.com/SurajNyavanandi/MERN-Task.git",
       bgGradient: "from-green-50 to-emerald-50"
     },
     {
       id: 3,
-      name: "AI Chatbot",
+      name: "AI Chatbot (Linea AI)",
       description: "Intelligent chatbot with natural language processing, conversation history, and real-time socket communication for dynamic responses.",
       tech: [SiReact, SiNodedotjs, SiExpress, SiMongodb, SiSocketdotio],
       liveUrl: "https://chat.virattom.com",
-      github: "https://github.com/SurajNyavanandi/chatbot",
+      github: "https://github.com/SurajNyavanandi/linea-ai.git",
       bgGradient: "from-purple-50 to-pink-50"
     },
     {
       id: 4,
-      name: "Job Portal",
-      description: "Job marketplace with employer/candidate dashboards, job posting, application tracking, resume upload, and email notifications.",
+      name: "RVM Bags Website",
+      description: "Modern e-commerce website for RVM bags with product showcase, cart management, and seamless checkout experience.",
       tech: [SiReact, SiNodedotjs, SiExpress, SiMongodb, SiTailwindcss],
-      liveUrl: "https://job.virattom.com",
-      github: "https://github.com/SurajNyavanandi/jobportal",
+      liveUrl: "https://bags.virattom.com",
+      github: "https://github.com/SurajNyavanandi/rvmbags-website.git",
       bgGradient: "from-orange-50 to-red-50"
     }
   ];
@@ -79,8 +82,98 @@ function App() {
   ];
 
   const menuItems = ["Work", "Skills", "About", "Contact"];
-
   const scrollingSkills = [...skills, ...skills, ...skills];
+
+  const isProjectExpanded = (id) => expandedProject === null || expandedProject === id;
+
+  const ProjectCard = ({ project }) => {
+    const expanded = isProjectExpanded(project.id);
+
+    const handleTogglePreview = () => {
+      if (expandedProject === null) {
+        setExpandedProject(project.id);
+      } else if (expandedProject === project.id) {
+        setExpandedProject(null);
+      } else {
+        setExpandedProject(null);
+      }
+    };
+
+    return (
+      <div className="space-y-4">
+        {expanded && (
+          <div className="rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-lg">
+            <div className="flex items-center justify-between bg-gray-100 px-4 py-3 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <span className="text-xs text-gray-500 font-mono truncate">{project.liveUrl}</span>
+              <button
+                onClick={() => setFullScreenProject(project.id)}
+                className="text-gray-400 hover:text-gray-600 p-1"
+              >
+                <Maximize2 size={16} />
+              </button>
+            </div>
+            <iframe
+              src={project.liveUrl}
+              className="w-full h-96 bg-white"
+              title={project.name}
+              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+            />
+          </div>
+        )}
+
+        <div className={`bg-gradient-to-br ${project.bgGradient} rounded-2xl p-6 hover:shadow-xl transition-all duration-300 border border-gray-100 group`}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex gap-2">
+              {project.tech.map((Tech, idx) => (
+                <Tech key={idx} size={20} className="text-gray-500" />
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleTogglePreview}
+                className="flex items-center gap-1 text-xs bg-white/80 px-3 py-1 rounded-full text-blue-600 font-medium hover:bg-white transition"
+              >
+                {expanded ? "Hide" : "Preview"}
+              </button>
+              <a 
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-xs bg-white/80 px-3 py-1 rounded-full text-blue-600 font-medium hover:bg-white transition"
+              >
+                Live <ArrowUpRight size={12} />
+              </a>
+            </div>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">{project.name}</h3>
+          <p className="text-gray-500 text-sm leading-relaxed mb-4">{project.description}</p>
+          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+            <a 
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-gray-400 group-hover:text-blue-600 transition flex items-center gap-1"
+            >
+              Visit website <ExternalLink size={12} />
+            </a>
+            <a 
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-gray-600 transition"
+            >
+              <Github size={16} />
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
@@ -118,6 +211,13 @@ function App() {
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-3xl mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            <img 
+              src={profilePic}
+              alt="Suraj Nyavanandi" 
+              className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+            />
+          </div>
           <h1 className="text-5xl md:text-6xl font-light tracking-tight text-gray-900 mb-4">
             Suraj Nyavanandi
           </h1>
@@ -167,51 +267,15 @@ function App() {
         </div>
       </div>
 
-      {/* Projects Grid Section - Fixed nested anchor issue */}
+      {/* Projects Grid Section */}
       <section id="work" className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl font-light text-gray-900 mb-2">Selected Work</h2>
-          <p className="text-gray-400 text-sm mb-10">Click any project to see live demo</p>
+          <p className="text-gray-400 text-sm mb-10">Click "Hide" to collapse preview</p>
           
           <div className="grid md:grid-cols-2 gap-6">
             {projects.map(project => (
-              <div key={project.id} className={`bg-gradient-to-br ${project.bgGradient} rounded-2xl p-6 hover:shadow-xl transition-all duration-300 border border-gray-100 group`}>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex gap-2">
-                    {project.tech.map((Tech, idx) => (
-                      <Tech key={idx} size={20} className="text-gray-500" />
-                    ))}
-                  </div>
-                  <a 
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-xs bg-white/80 px-3 py-1 rounded-full text-blue-600 font-medium hover:bg-white transition"
-                  >
-                    Live Demo <ArrowUpRight size={12} />
-                  </a>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{project.name}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed mb-4">{project.description}</p>
-                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                  <a 
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-gray-400 group-hover:text-blue-600 transition flex items-center gap-1"
-                  >
-                    Visit website <ExternalLink size={12} />
-                  </a>
-                  <a 
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-gray-600 transition"
-                  >
-                    <Github size={16} />
-                  </a>
-                </div>
-              </div>
+              <ProjectCard key={project.id} project={project} />
             ))}
           </div>
         </div>
@@ -245,14 +309,6 @@ function App() {
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4 p-5 rounded-xl bg-gray-50">
-              {/* <div className="flex items-start gap-3">
-                <Briefcase size={18} className="text-blue-500 mt-0.5" />
-                <div>
-                  <h3 className="font-medium text-gray-900">MERN Stack Developer</h3>
-                  <p className="text-xs text-gray-500">Sharpener (Remote) | Mar 2025 – Feb 2026</p>
-                  <p className="text-xs text-gray-400 mt-1">11 months intensive training with production-grade projects</p>
-                </div>
-              </div> */}
               <div className="flex items-start gap-3">
                 <GraduationCap size={18} className="text-green-500 mt-0.5" />
                 <div>
@@ -319,6 +375,31 @@ function App() {
       <footer className="py-6 text-center text-xs text-gray-400 border-t border-gray-100">
         <p>© 2025 Suraj Nyavanandi | Built with React, Tailwind CSS</p>
       </footer>
+
+      {/* Fullscreen Modal */}
+      {fullScreenProject && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full h-screen max-w-6xl overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between bg-gray-100 px-6 py-4 border-b border-gray-200">
+              <span className="text-sm font-medium text-gray-900">
+                {projects.find(p => p.id === fullScreenProject)?.name}
+              </span>
+              <button
+                onClick={() => setFullScreenProject(null)}
+                className="text-gray-400 hover:text-gray-600 p-2"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <iframe
+              src={projects.find(p => p.id === fullScreenProject)?.liveUrl}
+              className="flex-1 w-full"
+              title="Project Preview"
+              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+            />
+          </div>
+        </div>
+      )}
 
       <style>{`
         @keyframes marquee {
