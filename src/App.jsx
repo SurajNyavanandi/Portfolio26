@@ -245,14 +245,14 @@ function App() {
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4 p-5 rounded-xl bg-gray-50">
-              <div className="flex items-start gap-3">
+              {/* <div className="flex items-start gap-3">
                 <Briefcase size={18} className="text-blue-500 mt-0.5" />
                 <div>
                   <h3 className="font-medium text-gray-900">MERN Stack Developer</h3>
                   <p className="text-xs text-gray-500">Sharpener (Remote) | Mar 2025 – Feb 2026</p>
                   <p className="text-xs text-gray-400 mt-1">11 months intensive training with production-grade projects</p>
                 </div>
-              </div>
+              </div> */}
               <div className="flex items-start gap-3">
                 <GraduationCap size={18} className="text-green-500 mt-0.5" />
                 <div>
